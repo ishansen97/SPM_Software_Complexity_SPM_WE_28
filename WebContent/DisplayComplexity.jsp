@@ -52,13 +52,13 @@
 							<th>Line no.</th>
 							<th>Statement</th>
 							<!-- <th>Size Tokens</th> -->
-							<th>Cs</th>
-							<th>CnC</th>
-							<th>CtC</th>
-							<th>Ci</th>
-							<th>TW</th>
-							<th>Cps</th>
-							<th>Cr</th>
+							<th>Size Count (Cs)</th>
+							<th>Nested Control Count (CnC)</th>
+							<th>Control Structure Count (CtC)</th>
+							<th>Inheritance Count (Ci)</th>
+							<th>Total Weight (TW)</th>
+							<th>Program Statement Complexity (Cps)</th>
+							<th>Recursion Count (Cr)</th>
 							
 						</tr>
 					</thead>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<%@page import="java.util.List,logic.*" %>
 <head>
   <title>Bootstrap 4 Website Example</title>
   <meta charset="utf-8">
@@ -16,7 +17,8 @@
   </style>
 </head>
 <body>
-
+	<% List<String> errorMessages = (List<String>) session.getAttribute("ErrorMessages");
+	%>
 <!-- <div class="jumbotron text-center" style="margin-bottom:0">
   <h1>My First Bootstrap 4 Page</h1>
   <p>Resize this responsive page to see the effect!</p> 
@@ -71,14 +73,12 @@
     <div class="col-sm-12">
       <h2 class="text-center">File Name</h2>
       <h5>No. of lines: 10</h5>
-
-		<form action="<%=request.getContextPath() %>/DisplayProgramComplexityServlet" method="POST">     
+    
 	     <div class="form-group">
-	     	<textarea rows="60" cols="50" class="form-control jumbotron" style="font-size: 25px" readonly>public class Ishan
+	     	<textarea rows="60" cols="50" class="form-control jumbotron" style="font-size: 30px" readonly><% for (String error: errorMessages) { %><%=error %><% } %>		
 	   		</textarea>
-	     	<button type="submit" class="btn btn-success">Calculate Complexity</a>
+	     	<a href="CalculateComplexity.jsp" class="btn btn-success">Upload New File</a>
 	     </div>
-		</form>
 	
     </div>
   </div>
