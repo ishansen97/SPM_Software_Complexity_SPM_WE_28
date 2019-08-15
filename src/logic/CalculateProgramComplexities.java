@@ -1,4 +1,4 @@
-package test;
+package logic;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,25 +6,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import logic.ComplexityMeasurements;
-import logic.ProgramComplexityLogic;
 import models.ComplexitySettings;
 import models.ProgramStatementComplexity;
 
-public class TestFileRead {
+public class CalculateProgramComplexities {
 
-	public static void main(String[] args) {
+	public static List<ProgramStatementComplexity> getProgramComplexity(String fileName) {
 		
-		String fileName1 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Sample Java Programs\\ThreadTest.java";
-		String fileName2 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\SampleClass.java";
-		String fileName3 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Github repo\\SPM_Software_Complexity_SPM_WE_28\\src\\test\\TestInheritanceClass.java";
-		String fileName4 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\FibonacciMain.java";
-		File file = new File(fileName4); 
+		File file = new File(fileName); 
 		  
 		  BufferedReader br,br1,br2,br3,br4,br5,br6;
 		  List<String> java_keywords = ComplexitySettings.JAVA_KEYWORDS;
@@ -57,7 +49,6 @@ public class TestFileRead {
 			br6 = new BufferedReader(new FileReader(file));
 			String st; 
 			int count = 0;
-			List<String> tokens = new ArrayList<>();
 			ComplexityMeasurements cm = new ComplexityMeasurements(classes, variables, java_keywords, arithmetic_operators, relation_operators, logical_operators, bitwise_operators, miscellaneous_operators, primitive_types, method_definitions);
 			
 			//checking for size measurements
@@ -76,6 +67,7 @@ public class TestFileRead {
 			    System.out.println(st);
 
 			  }
+			br.close();
 			
 			
 			//checking for inheritance measurements
@@ -94,28 +86,10 @@ public class TestFileRead {
 			ComplexityMeasurements cm4 = new ComplexityMeasurements(br4);
 			List<String> recursion_methods = ComplexityMeasurements.calculateRecursionMeasurements(cm4);
 			
-
-			System.out.println("======================");
-			
-
-			
-			System.out.println("======================");
 			
 			ProgramComplexityLogic pcl = new ProgramComplexityLogic(programStatements, control_structure_complexities, nesting_level_complexities, class_inheritance_counts, recursion_methods);
 			total_complexities = pcl.calculateProgramStatementComplexity(br5,br6);
 			
-			for (ProgramStatementComplexity ps: total_complexities) {
-				System.out.println("Details for line count: " + ps.getLineNumber());
-				System.out.println("=========================================\n");
-				System.out.println("Size count: " + ps.getSize_count());
-				System.out.println("Control count: " + ps.getControl_count());
-				System.out.println("Nested count: " + ps.getNested_level_count());
-				System.out.println("Inheritance count: " + ps.getInheritance_count());
-				System.out.println("Total weight: " + ps.getTotal_weight());
-				System.out.println("Total Complexity: " + ps.getTotal_complexity());
-				System.out.println("Recursion Complexity: " + ps.getRecursion_count());
-				System.out.println("=========================================\n");
-			}
 			
 
 		} catch (FileNotFoundException e1) {
@@ -125,6 +99,9 @@ public class TestFileRead {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			return total_complexities;
 		}
+
 	}
 }
