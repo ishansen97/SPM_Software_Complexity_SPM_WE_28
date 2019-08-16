@@ -84,9 +84,9 @@
   </div>
 </div>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
+<!-- <div class="jumbotron text-center" style="margin-bottom:0">
   <p>Footer</p>
-</div>
+</div> -->
 
 </body>
 </html>

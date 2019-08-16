@@ -286,6 +286,9 @@ public class ComplexityMeasurements {
 	
 	public int getPrimitiveVariables() {
 		
+		st = st.replaceAll(Pattern.quote("("), " ");
+		st = st.replaceAll(Pattern.quote(")"), " ");
+		
 		for (String primitive: primitive_types) {
 			if (st.contains(primitive) && st.contains(" ")) {
 				String[] sub_parts = st.split(" ");
@@ -293,7 +296,7 @@ public class ComplexityMeasurements {
 				
 				for (String part: sub_parts) {
 					if (part.contains(primitive) && !part.contains("\"")) {
-						if (!variables.contains(sub_parts[index + 1])) {
+						if (!variables.contains(sub_parts[index + 1]) && !sub_parts[index + 1].contains(Pattern.quote("("))) {
 							variables.add(sub_parts[index + 1]);
 						}
 						size_count++;
@@ -308,7 +311,9 @@ public class ComplexityMeasurements {
 	public int getStringValues() {
 		
 		if (st.contains("\"")) {
-			size_count++;
+			int doubleQuoteCount = st.split(Pattern.quote("\""), -1).length - 1;
+			int size = doubleQuoteCount / 2;
+			size_count += size;
 		}
 		
 		return size_count;
@@ -457,6 +462,25 @@ public class ComplexityMeasurements {
 		return size_count;
 	}
 	
+	public int countVariableForReturn() {
+		st = st.replaceAll(Pattern.quote("("), " ");
+		st = st.replaceAll(Pattern.quote("("), " ");
+		
+		String[] parts = st.split(" ");
+		
+		parts[0] = parts[0].trim();
+		
+		if (parts[0].equals(ComplexitySettings.RETURN)) {
+			for (String part: parts) {
+				if (variables.contains(part) && !methods.contains(part)) {
+					size_count++;
+				}
+			}
+		}
+		
+		return size_count;
+	}
+	
 	public static ProgramStatementComplexity calculateSizeMeasurements(ComplexityMeasurements cm, int line_number) {
 		
 		Size = cm.getClasses();
@@ -472,6 +496,7 @@ public class ComplexityMeasurements {
 		Size = cm.getMiscellaneousOperations();
 		Size = cm.getDotOperatorSeparations();
 		Size = cm.getNumberCount();
+		Size = cm.countVariableForReturn();
 		
 		ProgramStatementComplexity psc = new ProgramStatementComplexity();
 		psc.setLineNumber(line_number);
@@ -479,6 +504,8 @@ public class ComplexityMeasurements {
 		
 		return psc;
 	}
+	
+	
 	
 	//calculating the inheritance for a given program
 	public static Map<String, Integer> calculateInheritanceMeasurements(ComplexityMeasurements cm) throws IOException, ClassNotFoundException {
