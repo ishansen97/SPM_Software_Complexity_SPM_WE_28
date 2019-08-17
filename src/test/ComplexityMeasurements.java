@@ -527,7 +527,7 @@ public class ComplexityMeasurements {
 				
 				//looping through the parts of the statement
 				for (String part: parts) {
-					//if the statement contains "class" keyword
+					//if the statement contain	s "class" keyword
 					if (part.equals(ComplexitySettings.CLASS)) {
 						String class_name = parts[index + 1];
 //						System.out.println("User defined class name: " + class_name);

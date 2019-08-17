@@ -15,10 +15,10 @@ public class TestFileRead {
 
 	public static void main(String[] args) {
 		
-		String fileName1 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Sample Java Programs\\ThreadTest.java";
-		String fileName2 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\SampleClass.java";
-		String fileName3 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\TestInheritanceClass.java";
-		String fileName4 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\FibonacciMain.java";
+		String fileName1 = "D:\\SLIIT\\3rd year\\2nd Semester\\SPM\\project\\spm\\ThreadTest.java";
+		String fileName2 = "D:\\SLIIT\\3rd year\\2nd Semester\\SPM\\project\\spm\\SampleClass.java";
+		String fileName3 = "D:\\SLIIT\\3rd year\\2nd Semester\\SPM\\project\\spm\\TestInheritanceClass.java";
+		String fileName4 = "D:\\SLIIT\\3rd year\\2nd Semester\\SPM\\project\\spm\\FibonacciMain.java";
 		File file = new File(fileName1); 
 		  
 		  BufferedReader br,br1,br2,br3,br4;
