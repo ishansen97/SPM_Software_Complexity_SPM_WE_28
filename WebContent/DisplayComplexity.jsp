@@ -68,7 +68,7 @@
 						<% while ((statement = br.readLine()) != null) { %>
 						
 						<tr>
-							<td><%=line_number %></td>
+							<td><%=(line_number + 1) %></td>
 							<td><%=statement %></td>
 							<td><%=programComplexity.get(line_number).getSize_count() %></td>
 							<td><%=programComplexity.get(line_number).getNested_level_count() %></td>

@@ -7,16 +7,16 @@ import java.util.List;
 public class ComplexitySettings {
 	public static final List<String> JAVA_KEYWORDS = new ArrayList<>(
 				Arrays.asList(
-							"abstract","assert","boolean","break ","byte",
-							"case","catch","char","const","continue",
-							"default","do","double","enum",
-							"extends","final","finally","float","for",
-							"goto","if","implements","instanceof",
-							"int","interface","long","native","new",
-							"private","protected","short",
-							"strictfp","super","switch","synchronized",
-							"this","throw","throws","transient","void",
-							"volatile","while","true","false","null"
+						"abstract","assert","boolean","break","byte",
+						"case","catch","char","const","continue",
+						"default","do","double","enum",
+						"extends","final","finally","float","for",
+						"goto","if","implements","instanceof",
+						"int","interface","long","native","new",
+						"private","protected","short",
+						"strictfp","super","switch","synchronized",
+						"this","throw","throws","transient","void",
+						"volatile","while","true","false","null"
 						)
 			);
 	
@@ -70,7 +70,7 @@ public class ComplexitySettings {
 	
 	public static final List<String> MISCELLANEOUS_OPERATORS = new ArrayList<>(
 			Arrays.asList(
-					",","->",".","::"
+					",","->","::"
 					)
 			);
 	

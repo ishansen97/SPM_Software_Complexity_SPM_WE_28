@@ -6,17 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 import logic.ComplexityMeasurements;
-import logic.ProgramComplexityLogic;
 import models.ComplexitySettings;
 import models.ProgramStatementComplexity;
 
-public class TestFileRead {
+public class TestSizeCounts {
 
 	public static void main(String[] args) {
 		
@@ -44,7 +40,6 @@ public class TestFileRead {
 		  List<String> user_defined_classes = new ArrayList<>();
 		  List<String> user_defined_parent_classes = new ArrayList<>();
 		  List<String> packages = new ArrayList<>();
-		  List<String> method_names = new ArrayList<>();
 		  List<ProgramStatementComplexity> programStatements = new ArrayList<>();
 		  List<ProgramStatementComplexity> total_complexities = new ArrayList<>();
 		  
@@ -59,9 +54,8 @@ public class TestFileRead {
 			br6 = new BufferedReader(new FileReader(file));
 			String st; 
 			int count = 0;
-			ComplexityMeasurements cm = new ComplexityMeasurements(classes, variables, java_keywords, arithmetic_operators, relation_operators, logical_operators, bitwise_operators, miscellaneous_operators, primitive_types, method_names);
+			ComplexityMeasurements cm = new ComplexityMeasurements(classes, variables, java_keywords, arithmetic_operators, relation_operators, logical_operators, bitwise_operators, miscellaneous_operators, primitive_types, method_definitions);
 			
-			//checking for size measurements
 			while ((st = br.readLine()) != null) {
 				int size_count = 0;
 				
@@ -69,6 +63,8 @@ public class TestFileRead {
 				
 				cm.setSize_count(size_count);
 				cm.setSt(st);
+				
+				System.out.println(st);
 				
 				//for calculating the size count
 				ProgramStatementComplexity obj = ComplexityMeasurements.calculateSizeMeasurements(cm, count);
@@ -78,48 +74,11 @@ public class TestFileRead {
 
 			  }
 			
-			
-			//checking for inheritance measurements
-			ComplexityMeasurements cm1 = new ComplexityMeasurements(user_defined_classes, user_defined_parent_classes, packages, br1);
-			Map<String, Integer> class_inheritance_counts = ComplexityMeasurements.calculateInheritanceMeasurements(cm1);
-			
-			//checking for control structure measurements
-			ComplexityMeasurements cm2 = new ComplexityMeasurements(conditional_logical_operations, br2);
-			List<ProgramStatementComplexity> control_structure_complexities = ComplexityMeasurements.calculateControlStructureCount(cm2);
-			
-			//checking for nesting level measurements
-			ComplexityMeasurements cm3 = new ComplexityMeasurements(br3);
-			List<ProgramStatementComplexity> nesting_level_complexities = ComplexityMeasurements.calculateNestingLevelMeasurement(cm3);
-			
-			//checking for recursion method measurements
-			ComplexityMeasurements cm4 = new ComplexityMeasurements(br4);
-			List<String> recursion_methods = ComplexityMeasurements.calculateRecursionMeasurements(cm4);
-			
-
-			System.out.println("======================");
-			
-
-			
-			System.out.println("======================");
-			
-			ProgramComplexityLogic pcl = new ProgramComplexityLogic(programStatements, control_structure_complexities, nesting_level_complexities, class_inheritance_counts, recursion_methods);
-			total_complexities = pcl.calculateProgramStatementComplexity(br5,br6);
-			
-			for (ProgramStatementComplexity ps: total_complexities) {
-				System.out.println("Details for line count: " + ps.getLineNumber());
-				System.out.println("=========================================\n");
-				System.out.println("Size count: " + ps.getSize_count());
-				System.out.println("Control count: " + ps.getControl_count());
-				System.out.println("Nested count: " + ps.getNested_level_count());
-				System.out.println("Inheritance count: " + ps.getInheritance_count());
-				System.out.println("Total weight: " + ps.getTotal_weight());
-				System.out.println("Total Complexity: " + ps.getTotal_complexity());
-				System.out.println("Recursion Complexity: " + ps.getRecursion_count());
-				System.out.println("=========================================\n");
+			for (ProgramStatementComplexity psc: programStatements) {
+				System.out.println("Size count for line no. " + psc.getLineNumber() + ": " + psc.getSize_count());
+				System.out.println("===============================\n");
 			}
 			
-			
-
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		} 

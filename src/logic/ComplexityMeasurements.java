@@ -190,7 +190,7 @@ public class ComplexityMeasurements {
 					if (mini_parts[0].equals("")) {
 						if (!mini_parts[0].equals("")) {
 							if (Character.isUpperCase(mini_parts[1].charAt(0))) {
-								System.out.println("There is a class in :" + mini_parts[1]);
+//								System.out.println("There is a class in :" + mini_parts[1]);
 								
 								if (!classes.contains(mini_parts[1]))
 									classes.add(mini_parts[1]);
@@ -202,7 +202,7 @@ public class ComplexityMeasurements {
 						if (Character.isUpperCase(mini_parts[1].charAt(0))) {
 							if (mini_parts[1].contains("[]")) {
 								String class_part[] = mini_parts[1].split(Pattern.quote("[]"));
-								System.out.println("There is a class in :" + class_part[0]);
+//								System.out.println("There is a class in :" + class_part[0]);
 								
 								if (!classes.contains(class_part[0]))
 									classes.add(class_part[0]);
@@ -213,7 +213,7 @@ public class ComplexityMeasurements {
 					else if (Character.isUpperCase(mini_parts[1].charAt(0))) {
 						if (mini_parts[1].contains("[]")) {
 							String class_part[] = mini_parts[1].split(Pattern.quote("[]"));
-							System.out.println("There is a class in :" + class_part[0]);
+//							System.out.println("There is a class in :" + class_part[0]);
 							
 							if (!classes.contains(class_part[0]))
 								classes.add(class_part[0]);
@@ -223,7 +223,7 @@ public class ComplexityMeasurements {
 					
 					else if (mini_parts[1].contains("\"")) {
 						if (Character.isUpperCase(mini_parts[0].charAt(0))) {
-							System.out.println("There is a class in :" + mini_parts[0]);
+//							System.out.println("There is a class in :" + mini_parts[0]);
 							
 							if (!classes.contains(mini_parts[0]))
 								classes.add(mini_parts[0]);
@@ -237,7 +237,7 @@ public class ComplexityMeasurements {
 				else {
 					String trimmed = part.trim();
 					if (Character.isUpperCase(trimmed.charAt(0)) && !trimmed.contains("(")) {
-						System.out.println("There is a class in :" + part);
+//						System.out.println("There is a class in :" + part);
 						
 						if (!classes.contains(trimmed))
 							classes.add(trimmed);
@@ -246,7 +246,13 @@ public class ComplexityMeasurements {
 				}
 			}
 		}
+		
+		//if the statement contains "public" or "class" keywords, ignore the size count
+		if (st.contains(ComplexitySettings.CLASS)) {
+			size_count = 0;
+		}
 		return size_count;
+		
 	}
 
 	public int getClassVariables() {
@@ -262,16 +268,20 @@ public class ComplexityMeasurements {
 							if (!(sub_parts[index + 1].contains("{"))) {
 								if (sub_parts[index + 1].contains(")")) {
 									String[] var_part = sub_parts[index + 1].split(Pattern.quote(")"));
-									if (!variables.contains(var_part[0]) && !java_keywords.contains(var_part[0]) && !var_part[0].contains("(")) {
+									if (!variables.contains(var_part[0]) && !var_part[0].contains(ComplexitySettings.EXTENDS) && !var_part[0].contains(ComplexitySettings.IMPLEMENTS) && !var_part[0].contains("(")) {
 										variables.add(var_part[0]);
 									}
-									size_count++;
+									
+//									if (!var_part[0].contains(ComplexitySettings.EXTENDS) && !var_part[0].contains(ComplexitySettings.IMPLEMENTS))
+//										size_count++;
 								}
 								else {
-									if (!variables.contains(sub_parts[index + 1]) && !java_keywords.contains(sub_parts[index + 1])) {
+									if (!variables.contains(sub_parts[index + 1]) && !sub_parts[index + 1].contains(ComplexitySettings.EXTENDS) && !sub_parts[index + 1].contains(ComplexitySettings.IMPLEMENTS)) {
 										variables.add(sub_parts[index + 1]);
 									}
-									size_count++;
+									
+//									if (!sub_parts[index + 1].contains(ComplexitySettings.EXTENDS) && !sub_parts[index + 1].contains(ComplexitySettings.IMPLEMENTS))
+//										size_count++;
 								}
 								
 							}
@@ -286,20 +296,45 @@ public class ComplexityMeasurements {
 	
 	public int getPrimitiveVariables() {
 		
-		st = st.replaceAll(Pattern.quote("("), " ");
-		st = st.replaceAll(Pattern.quote(")"), " ");
+		String st1, st2, st3;
+		boolean isBracketFound = false;
+		
+//		st1 = st.replaceAll(Pattern.quote("("), " ");
+		st1 = st.replaceAll(Pattern.quote(")"), " ");
+		st2 = st1.replaceAll(Pattern.quote("."), " ");
 		
 		for (String primitive: primitive_types) {
-			if (st.contains(primitive) && st.contains(" ")) {
-				String[] sub_parts = st.split(" ");
+			if (st2.contains(primitive) && st2.contains(" ") && !st2.contains("\"")) {
+				String[] sub_parts = st2.split(" ");
 				int index = 0;
 				
 				for (String part: sub_parts) {
-					if (part.contains(primitive) && !part.contains("\"")) {
-						if (!variables.contains(sub_parts[index + 1]) && !sub_parts[index + 1].contains(Pattern.quote("("))) {
+					
+					if (isBracketFound && !part.contains("\"")) {
+						part = part.replaceAll(Pattern.quote("("), " ");
+						String[] mini_parts = part.split(" ");
+						
+						if (mini_parts.length > 1)
+							part = mini_parts[1];
+					}
+					
+					if (part.equals(primitive) && !part.contains("\"")) {
+						if (!variables.contains(sub_parts[index + 1]) && !sub_parts[index + 1].contains("(")) {
 							variables.add(sub_parts[index + 1]);
+							isBracketFound = false;
 						}
-						size_count++;
+						
+						if (sub_parts[index + 1].contains("(")) {
+							isBracketFound = true;
+						}
+//						else
+//							size_count++;
+					}
+					
+					if (index < sub_parts.length - 1) {
+						if (sub_parts[index + 1].contains("(")) {
+							isBracketFound = true;
+						}
 					}
 					index++;
 				}
@@ -327,9 +362,9 @@ public class ComplexityMeasurements {
 
 			for (String s: parts) {
 				if (s.contains("(")) {
-					System.out.println("There's a method name at line no. ");
+					s = s.split(Pattern.quote("("))[0];
 					methods.add(s);
-					size_count++;
+//					size_count++;
 				}
 			}
 			
@@ -352,75 +387,135 @@ public class ComplexityMeasurements {
 	
 	public int getArithmeticOperations() {
 		
-		for (String arithmetic: arithmetic_operators) {
-			if (st.contains(arithmetic)) {
-//				System.out.println("Line no." +count+ " contains this Arithmetic Operator: " + arithmetic);
-				int occurence_count = (st.split(Pattern.quote(arithmetic), -1).length) - 1;
-				size_count += occurence_count;
+		String[] parts = st.split(" ");
+		
+		for (String part: parts) {
+			for (String arithemtic: arithmetic_operators) {
+				if (part.equals(arithemtic) && !part.contains("\"")) {
+					size_count++;
+				}
+				else if (part.contains(arithemtic)) {
+					size_count++;
+				}
 			}
 		}
+		
+//		for (String arithmetic: arithmetic_operators) {
+//			if (st.contains(arithmetic)) {
+//				int occurence_count = (st.split(Pattern.quote(arithmetic), -1).length) - 1;
+//				size_count += occurence_count;
+//			}
+//		}
 		return size_count;
 	}
 	
 	public int getRelationalOperations() {
 		
-		for (String relation: relation_operators) {
-			if (st.contains(relation)) {
-//				System.out.println("Line no." +count+ " contains this Relation Operator: " + relation);
-				int occurence_count = (st.split(Pattern.quote(relation), -1).length) - 1;
-				size_count += occurence_count;
+		String[] parts = st.split(" ");
+		
+		for (String part: parts) {
+			for (String relation: relation_operators) {
+				if (part.equals(relation) && !part.contains("\"")) {
+					size_count++;
+				}
 			}
 		}
+		
+//		for (String relation: relation_operators) {
+//			if (st.contains(relation)) {
+////				System.out.println("Line no." +count+ " contains this Relation Operator: " + relation);
+//				int occurence_count = (st.split(Pattern.quote(relation), -1).length) - 1;
+//				size_count += occurence_count;
+//			}
+//		}
 		return size_count;
 	}
 	
 	public int getLogicalOperations() {
 		
-		for (String logical: logical_operators) {
-			if (st.contains(logical)) {
-//				System.out.println("Line no." +count+ " contains this logical Operator: " + logical);
-				int occurence_count = (st.split(Pattern.quote(logical), -1).length) - 1;
-				size_count += occurence_count;
+		String[] parts = st.split(" ");
+		
+		for (String part: parts) {
+			for (String logical: logical_operators) {
+				if (part.equals(logical) && !part.contains("\"")) {
+					size_count++;
+				}
 			}
 		}
+		
+//		for (String logical: logical_operators) {
+//			if (st.contains(logical)) {
+////				System.out.println("Line no." +count+ " contains this logical Operator: " + logical);
+//				int occurence_count = (st.split(Pattern.quote(logical), -1).length) - 1;
+//				size_count += occurence_count;
+//			}
+//		}
 		return size_count;
 	}
 	
 	public int getBitwiseOperations() {
 		
-		for (String bitwise: bitwise_operators) {
-			if (st.contains(bitwise)) {
-//				System.out.println("Line no." +count+ " contains this bitwise Operator: " + bitwise);
-				int occurence_count = (st.split(Pattern.quote(bitwise), -1).length) - 1;
-				size_count += occurence_count;
+		String[] parts = st.split(" ");
+		
+		for (String part: parts) {
+			for (String bitwise: bitwise_operators) {
+				if (part.equals(bitwise) && !part.contains("\"")) {
+					size_count++;
+				}
 			}
 		}
+		
+//		for (String bitwise: bitwise_operators) {
+//			if (st.contains(bitwise)) {
+////				System.out.println("Line no." +count+ " contains this bitwise Operator: " + bitwise);
+//				int occurence_count = (st.split(Pattern.quote(bitwise), -1).length) - 1;
+//				size_count += occurence_count;
+//			}
+//		}
 		return size_count;
 	}
 	
 	public int getMiscellaneousOperations() {
 		
-		for (String miscellaneous: miscellaneous_operators) {
-			if (st.contains(miscellaneous)) {
-//				System.out.println("Line no." +count+ " contains this miscellaneous Operator: " + miscellaneous);
-				int occurence_count = (st.split(Pattern.quote(miscellaneous), -1).length) - 1;
-				size_count += occurence_count;
-//				System.out.println("occurences: " + occurence_count);
+		String[] parts = st.split(" ");
+		
+		for (String part: parts) {
+			for (String miscellaneous: miscellaneous_operators) {
+				if (part.equals(miscellaneous) && !part.contains("\"")) {
+					size_count++;
+				}
 			}
 		}
+		
+//		for (String miscellaneous: miscellaneous_operators) {
+//			if (st.contains(miscellaneous)) {
+//				int occurence_count = (st.split(Pattern.quote(miscellaneous), -1).length) - 1;
+//				size_count += occurence_count;
+//			}
+//		}
 		return size_count;
 	}
 	
 	public int getDotOperatorSeparations() {
 		
+		int dot_count = 0;
+		
 		if (st.contains(ComplexitySettings.DOT)) {
 			String[] parts = st.split(Pattern.quote(ComplexitySettings.DOT));
+			dot_count = st.split(Pattern.quote(ComplexitySettings.DOT), -1).length - 1;
+			String temp_part;
 			
 			for (String part: parts) {
+				if (part.contains("(")) {
+//					temp_part = part.replaceAll(Pattern.quote("("), " ");
+//					int count = temp_part.split(" ").length - 1;
+					size_count += 1;
+				}
+				
 				size_count++;
 			}
 		}
-		return size_count;
+		return size_count + dot_count;
 	}
 	
 	public int getNumberCount() {
@@ -442,7 +537,7 @@ public class ComplexityMeasurements {
 			st = st.replace(relational, " ");
 		}
 		
-		System.out.println("After replacements: " + st);
+//		System.out.println("After replacements: " + st);
 		
 		String[] parts = st.split(" ");
 		
@@ -470,11 +565,9 @@ public class ComplexityMeasurements {
 		
 		parts[0] = parts[0].trim();
 		
-		if (parts[0].equals(ComplexitySettings.RETURN)) {
-			for (String part: parts) {
-				if (variables.contains(part) && !methods.contains(part)) {
-					size_count++;
-				}
+		for (String part: parts) {
+			if (variables.contains(part) || methods.contains(part)) {
+				size_count++;
 			}
 		}
 		
@@ -496,9 +589,9 @@ public class ComplexityMeasurements {
 		Size = cm.getMiscellaneousOperations();
 		Size = cm.getDotOperatorSeparations();
 		Size = cm.getNumberCount();
-		Size = cm.countVariableForReturn();
+ 		Size = cm.countVariableForReturn();
 		
-		ProgramStatementComplexity psc = new ProgramStatementComplexity();
+ 		ProgramStatementComplexity psc = new ProgramStatementComplexity();
 		psc.setLineNumber(line_number);
 		psc.setSize_count(Size);
 		
@@ -605,7 +698,7 @@ public class ComplexityMeasurements {
 			int calculated_inheritance = cm.getClassInheritance(class_start_point, class_name, user_defined_classes, parent_class_blocks, package_list);
 			total_inheritance = default_inheritance + calculated_inheritance;
 			
-			System.out.println("Inheritance for class " + class_name + ": " + total_inheritance);
+//			System.out.println("Inheritance for class " + class_name + ": " + total_inheritance);
 			
 			class_inheritance_count.put(class_name, total_inheritance);
 			
@@ -759,7 +852,7 @@ public class ComplexityMeasurements {
 			
 			programStatements.add(psc);
 			
-			System.out.println("Control structure measurements: " + control_points);
+//			System.out.println("Control structure measurements: " + control_points);
 			line_count++;
 		}
 		
@@ -886,7 +979,7 @@ public class ComplexityMeasurements {
 			if (nested_count <= 0) {
 				nested_count = 0;
 			}
-			System.out.println("Nested count for line no. " + line_count + ": " + nested_count);
+//			System.out.println("Nested count for line no. " + line_count + ": " + nested_count);
 			line_count++;
 			
 			//adding the nesting level count for the given line
@@ -917,6 +1010,8 @@ public class ComplexityMeasurements {
 			boolean isPotentialMethod = false;
 			boolean isFirstLine = false;
 			
+			System.out.println(statement);
+			
 			if (!statement.contains("\"") && statement.contains(" ")) {
 				String[] parts = statement.split(" ");
 				parts[0] = parts[0].trim();
@@ -934,7 +1029,7 @@ public class ComplexityMeasurements {
 					String[] method = statement.split(Pattern.quote("("));
 					
 					if (!method[0].trim().isEmpty()) {
-						System.out.println("Method name: " + method[0].trim());
+//						System.out.println("Method name: " + method[0].trim());
 						method_list.add(method[0].trim());
 						isMethodFound = true;
 						isFirstLine = true;
@@ -963,7 +1058,7 @@ public class ComplexityMeasurements {
 				
 				for (String part: sub_parts) {
 					if (method_list.contains(part.trim()) && !part.contains("\"") && !isFirstLine) {
-						System.out.println(part + " is a recursive method and recursion was found in line no. " + count);
+						System.out.println(part + " is a recursive method and recursion was found in line no. " + (count + 1));
 						
 						//adding the recursive method to the list
 						if (!recursive_methods.contains(part))
@@ -974,24 +1069,18 @@ public class ComplexityMeasurements {
 			}
 			
 			if ((left_braces == right_braces) && (left_braces > 0) && (right_braces > 0)) {
-				System.out.println("The method ends at line no. " + count + " and braces count is " + left_braces);
+				System.out.println("The method ends at line no. " + (count + 1));
 				isMethodFound = false;
 				left_braces = 0;
 				right_braces = 0;
 				method_list.clear();
 			}
 			
-			System.out.println(statement);
 			isFirstLine = false;
 			count++;
 			
 		}
 		
-		System.out.println("Potential recursive methods are: \n==============================\n");
-		
-		for (String m: recursive_methods) {
-			System.out.println("Recursive Method: " + m);
-		}
 		
 		return recursive_methods;
 
@@ -1090,6 +1179,7 @@ public class ComplexityMeasurements {
 						if (!method_part.isEmpty()) {
 							if (recursion_methods.contains(method_part.trim())) {
 								isRecursionStatement = true;
+								isRecursionMethodFound = true;
 							}
 						}
 					}
