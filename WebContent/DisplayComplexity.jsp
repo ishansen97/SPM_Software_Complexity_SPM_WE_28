@@ -19,6 +19,10 @@
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String statement = null;
 		int line_number = 0;
+		int totalComplexity = 0;
+		
+		int last = fileName.lastIndexOf("\\");
+		String programName = fileName.substring(last + 1);
 	%>
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   		<a class="navbar-brand" href="#">Home</a>
@@ -31,7 +35,7 @@
         			<a class="nav-link" href="#">Calculate Complexity</a>
       			</li>
       			<li class="nav-item">
-        			<a class="nav-link" href="#">View Past Measurements</a>
+        			<a class="nav-link" href="<%=request.getContextPath() %>/DisplayProgramComplexities.jsp">View Past Measurements</a>
       			</li>
 		      	<li class="nav-item">
 		        	<a class="nav-link" href="#">Compare</a>
@@ -45,7 +49,7 @@
 		<div class="text-center">
 			<h2 class="modal-header">Display Complexity</h2>
 		</div>
-			<form action="">
+			<form action="<%=request.getContextPath() %>/InsertProgramComplexity" method="POST">
 				<table class="table table-striped table-bordered">
 					<thead>	
 						<tr>
@@ -77,13 +81,36 @@
 							<td><%=programComplexity.get(line_number).getTotal_weight() %></td>
 							<td><%=programComplexity.get(line_number).getTotal_complexity() %></td>
 							<td><%=programComplexity.get(line_number).getRecursion_count() %></td>
+							<% programComplexity.get(line_number).setProgramStatement(statement); %>
 						</tr>
+						<% if (programComplexity.get(line_number).getRecursion_count() == 0) {
+								totalComplexity += programComplexity.get(line_number).getTotal_complexity();
+							}
+						else {
+							totalComplexity += programComplexity.get(line_number).getRecursion_count();
+						}
+							%>
 						<% line_number++; %>
 						
-						<% } %>
 						
+						
+						<% } %>
+						<tr>
+							<td>Total Complexity</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><%=totalComplexity %></td>
+						</tr>
 					</tbody>
 				</table>
+				<input type="hidden" name="total_complexity" id="total_complexity" value="<%=totalComplexity %>"/>
+				<input type="hidden" name="no_of_lines" id="no_of_lines" value="<%=line_number %>" />
+				<input type="hidden" name="programName" id="programName" value="<%=programName %>" />
 				<div class="form-actions">
                      <div class="row">
                          <div class="col-md-12">

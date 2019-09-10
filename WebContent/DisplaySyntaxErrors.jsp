@@ -35,7 +35,7 @@
         <a class="nav-link" href="#">Calculate Complexity</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">View Past Measurements</a>
+        <a class="nav-link" href="<%=request.getContextPath() %>/DisplayProgramComplexities.jsp">View Past Measurements</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Compare</a>

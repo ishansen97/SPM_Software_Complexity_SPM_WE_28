@@ -1,10 +1,15 @@
 package logic;
 
 import java.io.BufferedReader;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import dbconnection.DBConnection;
+import entity.ProgramComplexity;
+import models.InsertProgrammingComplexityRequest;
+import models.InsertProgrammingComplexityResponse;
 import models.ProgramStatementComplexity;
 
 public class ProgramComplexityLogic {
@@ -29,6 +34,9 @@ public class ProgramComplexityLogic {
 		this.recursion_methods = recursion_methods;
 	}
 
+	public ProgramComplexityLogic() {
+		super();
+	}
 
 
 	public List<ProgramStatementComplexity> calculateProgramStatementComplexity(BufferedReader br1, BufferedReader br2) {
@@ -90,4 +98,5 @@ public class ProgramComplexityLogic {
 		}
 		
 	}
+	
 }
