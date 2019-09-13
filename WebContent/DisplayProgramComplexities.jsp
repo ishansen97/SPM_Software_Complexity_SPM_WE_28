@@ -117,28 +117,11 @@
 		});
 	</script>
 	<% ProgramComplexityService service = new ProgramComplexityService();
-		List<GetProgrammingComplexityResponse> programComplexities = service.getAllProgramComplexities();
+		List<GetProgrammingComplexityResponse> programComplexities = null;
+		programComplexities = service.getAllProgramComplexities();
 		
 	%>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  		<a class="navbar-brand" href="#">Home</a>
-  		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    		<span class="navbar-toggler-icon"></span>
-  		</button>
-  		<div class="collapse navbar-collapse" id="collapsibleNavbar">
-    		<ul class="navbar-nav">
-      			<li class="nav-item">
-        			<a class="nav-link" href="#">Calculate Complexity</a>
-      			</li>
-      			<li class="nav-item">
-        			<a class="nav-link" href="<%=request.getContextPath() %>/DisplayProgramComplexities.jsp">View Past Measurements</a>
-      			</li>
-		      	<li class="nav-item">
-		        	<a class="nav-link" href="#">Compare</a>
-		      	</li>    
-    		</ul>
-  		</div>  
-	</nav>
+	<%@include file="header.jsp" %>
 	
 	<div class="container">
 		<div class="row">
@@ -148,6 +131,7 @@
 		</div>
 		
 		<div class="row">
+			<% if (programComplexities.size() != 0) { %>
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -174,6 +158,11 @@
 				</tbody>
 					
 			</table>
+			<% } else { %>
+				<div class="row">
+					<div class="alert alert-danger">No records found</div>
+				</div>
+			<% } %>
 			<div class="form-group">
 				<div col="col-10"></div>
 				<div col="col-2">
@@ -231,7 +220,6 @@
 					<table class="table table-striped table-bordered">
 						<thead>	
 							<tr>
-								<th></th>
 								<th>Line no.</th>
 								<th>Statement</th>
 								<th>Size Count (Cs)</th>

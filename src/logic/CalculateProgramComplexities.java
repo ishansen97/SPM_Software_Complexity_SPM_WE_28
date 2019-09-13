@@ -28,6 +28,7 @@ public class CalculateProgramComplexities {
 		  List<String> manipulators = ComplexitySettings.MANIPULATORS;
 		  List<String> return_types = ComplexitySettings.RETURN_TYPES;
 		  List<String> method_definitions = ComplexitySettings.METHOD_DEFINITIONS;
+		  List<String> method_list = new ArrayList<>();
 		  List<String> primitive_types = ComplexitySettings.PRIMITIVE_TYPES;
 		  List<String> conditional_logical_operations = ComplexitySettings.CONDITIONAL_LOGICAL_OPERATORS;
 		  List<String> variables = new ArrayList<>();
@@ -49,7 +50,7 @@ public class CalculateProgramComplexities {
 			br6 = new BufferedReader(new FileReader(file));
 			String st; 
 			int count = 0;
-			ComplexityMeasurements cm = new ComplexityMeasurements(classes, variables, java_keywords, arithmetic_operators, relation_operators, logical_operators, bitwise_operators, miscellaneous_operators, primitive_types, method_definitions);
+			ComplexityMeasurements cm = new ComplexityMeasurements(classes, variables, java_keywords, arithmetic_operators, relation_operators, logical_operators, bitwise_operators, miscellaneous_operators, primitive_types, method_list);
 			
 			//checking for size measurements
 			while ((st = br.readLine()) != null) {

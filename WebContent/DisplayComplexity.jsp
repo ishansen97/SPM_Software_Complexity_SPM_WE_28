@@ -38,7 +38,7 @@
         			<a class="nav-link" href="<%=request.getContextPath() %>/DisplayProgramComplexities.jsp">View Past Measurements</a>
       			</li>
 		      	<li class="nav-item">
-		        	<a class="nav-link" href="#">Compare</a>
+		        	<a class="nav-link" href="<%=request.getContextPath() %>/CalculateComplexity.jsp">Compare</a>
 		      	</li>    
     		</ul>
   		</div>  

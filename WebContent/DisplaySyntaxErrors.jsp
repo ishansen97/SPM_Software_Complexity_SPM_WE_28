@@ -32,7 +32,7 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="#">Calculate Complexity</a>
+        <a class="nav-link" href="<%=request.getContextPath() %>/CalculateComplexity.jsp">Calculate Complexity</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<%=request.getContextPath() %>/DisplayProgramComplexities.jsp">View Past Measurements</a>

@@ -318,7 +318,7 @@ public class ComplexityMeasurements {
 							part = mini_parts[1];
 					}
 					
-					if (part.equals(primitive) && !part.contains("\"")) {
+					if (part.trim().equals(primitive) && !part.trim().contains("\"")) {
 						if (!variables.contains(sub_parts[index + 1]) && !sub_parts[index + 1].contains("(")) {
 							variables.add(sub_parts[index + 1]);
 							isBracketFound = false;

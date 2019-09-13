@@ -46,12 +46,15 @@ public class DisplayProgramComplexityServlet extends HttpServlet {
 		
 //		String fileName = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\FibonacciMain.java";
 //		String fileName = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Sample Java Programs\\ThreadTest.java";
-		String fileName = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Github repo\\SPM_Software_Complexity_SPM_WE_28\\src\\test\\ErroClass.java";
+//		String fileName = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Github repo\\SPM_Software_Complexity_SPM_WE_28\\src\\test\\ErroClass.java";
 //		String fileName = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Github repo\\SPM_Software_Complexity_SPM_WE_28\\src\\test\\RecursionExample2.java";
 //		String fileName = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\SampleClass.java";
 //		String fileName = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Github repo\\SPM_Software_Complexity_SPM_WE_28\\src\\test\\TestInheritanceClass.java";
+//		String fileName = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Github repo\\SPM_Software_Complexity_SPM_WE_28\\src\\entity\\ProgramComplexity.java";
 		List<ProgramStatementComplexity> programComplexity = null;
 		HttpSession session = request.getSession();
+		
+		String fileName = request.getParameter("filePath");
 		
 		List<String> errorMessages = JavaSyntaxChecker.check(fileName);
 		
