@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="entity.ProgramComplexityMeasurement"%>
 <%@page import="service.ProgramComplexityService"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -20,9 +21,10 @@
   <script src="./External/Bootstrap/js/bootstrap.min.js"></script>
   
   <style>
-  	.modal-dialog {
-  		width: 1000px;
-  		padding: 30px;
+  @media (min-width: 992px)
+  	.modal-lg {
+  		max-width: 1200px;
+  		/* padding: 30px; */
   	}
   </style>
 </head>
@@ -53,8 +55,6 @@
 			
 			$(".checkboxes").click(function () {
 				var checkedId = $(this).attr("data-id");
-				
-				alert('checked Id: ' + checkedId);
 				
 				var index = checkedIds.indexOf(checkedId);
 				
@@ -116,7 +116,9 @@
 			
 		});
 	</script>
-	<% ProgramComplexityService service = new ProgramComplexityService();
+	<% DecimalFormat formatter = new DecimalFormat("0.0");
+	
+		ProgramComplexityService service = new ProgramComplexityService();
 		List<GetProgrammingComplexityResponse> programComplexities = null;
 		programComplexities = service.getAllProgramComplexities();
 		
@@ -176,13 +178,17 @@
 				<h1>Program 1 <span id="program1"></span></h1>
 				<% for (GetProgrammingComplexityResponse programComplexity: programComplexities) { %>
 					<div class="form-group selected-programs1" data-id="<%=programComplexity.getProgramId() %>" hidden>
+						<label>Program Name</label>
+						<input type="text" class="form-control" value="<%=programComplexity.getProgramName() %>" readonly />
 						<label>No. of lines</label>
 						<input type="number" class="form-control" value="<%=programComplexity.getNoOfLines() %>" readonly />
 						<label>Total Complexity</label>
 						<input type="number" class="form-control" value="<%=programComplexity.getTotalComplexity() %>" readonly />
 						<label>Average Complexity Per line</label>
-						<input type="number" class="form-control" value="<%=programComplexity.getTotalComplexity() / (double) programComplexity.getNoOfLines() %>" onload="func()" readonly />
-						<i class="fa fa-save icon" ></i>
+						<% double average = programComplexity.getTotalComplexity() / (double) programComplexity.getNoOfLines();
+							String finalAvg = formatter.format(average);
+						%>
+						<input type="number" class="form-control" value="<%=finalAvg %>" readonly />
 					</div>
 				<% } %>
 			</div>
@@ -190,13 +196,17 @@
 				<h1>Program 2 <span id="program2"></span></h1>
 				<% for (GetProgrammingComplexityResponse programComplexity: programComplexities) { %>
 					<div class="form-group selected-programs2" data-id="<%=programComplexity.getProgramId() %>" hidden>
+						<label>Program Name</label>
+						<input type="text" class="form-control" value="<%=programComplexity.getProgramName() %>" readonly />
 						<label>No. of lines</label>
 						<input type="number" class="form-control" value="<%=programComplexity.getNoOfLines() %>" readonly />
 						<label>Total Complexity</label>
 						<input type="number" class="form-control" value="<%=programComplexity.getTotalComplexity() %>" readonly />
 						<label>Average Complexity Per line</label>
-						<input type="number" class="form-control" value="<%=programComplexity.getTotalComplexity() / (double) programComplexity.getNoOfLines() %>" onload="func()" readonly />
-						<i class="fa fa-save icon bg-danger" ></i>
+						<% double average = programComplexity.getTotalComplexity() / (double) programComplexity.getNoOfLines();
+							String finalAvg = formatter.format(average);
+						%>
+						<input type="number" class="form-control" value="<%=finalAvg %>" readonly />
 					</div>
 				<% } %>
 			</div>
@@ -205,7 +215,7 @@
 	
 	<!-- modal content -->
 	<div class="modal fade" id="details">
-		<div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+		<div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" style="max-width: 1200px">
 			<div class="modal-content">
 				<div class="modal-header">
 					<div class="col-10">

@@ -70,6 +70,7 @@ public class DisplayProgramComplexityServlet extends HttpServlet {
 		}
 		else {
 			session.setAttribute("ErrorMessages", errorMessages);
+			session.setAttribute("FileName", fileName);
 			response.sendRedirect(request.getContextPath() + "/DisplaySyntaxErrors.jsp");
 		}
 	}

@@ -498,6 +498,9 @@ public class ComplexityMeasurements {
 	
 	public int getDotOperatorSeparations() {
 		
+		String[] strParts = st.split(" ");
+		strParts[0] = strParts[0].trim();
+		
 		int dot_count = 0;
 		
 		if (st.contains(ComplexitySettings.DOT)) {
@@ -514,6 +517,10 @@ public class ComplexityMeasurements {
 				
 				size_count++;
 			}
+		}
+		
+		if (strParts[0].equals(ComplexitySettings.IMPORT)) {
+			return 0;
 		}
 		return size_count + dot_count;
 	}
@@ -559,18 +566,28 @@ public class ComplexityMeasurements {
 	
 	public int countVariableForReturn() {
 		st = st.replaceAll(Pattern.quote("("), " ");
-		st = st.replaceAll(Pattern.quote("("), " ");
+//		st = st.replaceAll(Pattern.quote("("), " ");
 		
 		String[] parts = st.split(" ");
 		
 		parts[0] = parts[0].trim();
 		
 		for (String part: parts) {
-			if (variables.contains(part) || methods.contains(part)) {
+			if ((variables.contains(part) || methods.contains(part))) {
 				size_count++;
 			}
 		}
 		
+		return size_count;
+	}
+	
+	public int checkForImport() {
+		String[] parts = st.split(" ");
+		parts[0] = parts[0].trim();
+		
+		if (parts[0].equals(ComplexitySettings.IMPORT)) {
+			size_count = 0;
+		}
 		return size_count;
 	}
 	
@@ -590,6 +607,7 @@ public class ComplexityMeasurements {
 		Size = cm.getDotOperatorSeparations();
 		Size = cm.getNumberCount();
  		Size = cm.countVariableForReturn();
+ 		Size = cm.checkForImport();
 		
  		ProgramStatementComplexity psc = new ProgramStatementComplexity();
 		psc.setLineNumber(line_number);
@@ -726,13 +744,19 @@ public class ComplexityMeasurements {
 			if (package_list.size() == 0) {
 				
 				String qualified_name = default_package + "." + parent_class;
-				Class cl = Class.forName(qualified_name);
 				
-				int cl2 = getNoOfParentClass(cl);
-				
-				if (cl2 == 0) {
-					return 1;
+				try {
+					Class cl = Class.forName(qualified_name);
+					
+					int cl2 = getNoOfParentClass(cl);
+					
+					if (cl2 == 0) {
+						return 1;
+					}
+				} catch (Exception ex) {
+					
 				}
+				
 
 			}
 			
@@ -741,12 +765,17 @@ public class ComplexityMeasurements {
 				for (String pk: package_list) {
 					String qualified_name = pk + "." + parent_class;
 					
-					Class cl = Class.forName(qualified_name);
-					
-					int cl2 = getNoOfParentClass(cl);
-					if (cl2 == 0) {
-						return 1;
+					try {
+						Class cl = Class.forName(qualified_name);
+						
+						int cl2 = getNoOfParentClass(cl);
+						if (cl2 == 0) {
+							return 1;
+						}
+					} catch (Exception ex) {
+						
 					}
+					
 
 				}
 			}	

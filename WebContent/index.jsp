@@ -16,28 +16,47 @@
     <%@include file="header.jsp" %>
 	
 	<div class="container p-4">
-        <h3> Choose File to Upload in Server </h3>
-           <form action="<%=request.getContextPath() %>/upload" method="post" enctype="multipart/form-data">
-			<div class="row">
-	           	<div class="form-group">
-	           		<input type="file" name="file" class="form-control" enctype="multipart/form-data"/>
-	           	</div>
-       		</div>
-       		<div class="row">
-       			<div class="form-group">
-	            	<input type="submit" class="btn btn-success" value="upload" />
-	            </div>
-       		</div>
-       		
-       		<% try { 
-       		String message = request.getAttribute("error").toString(); 
-       		%>
-       		<p class="bg-danger"><%=message %></p>
-       		<% } catch (Exception ex) { %>
-       		<% } %>
-	               
-	               
-           </form>          
+	
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header text-center bg-primary text-white">
+						<div class="card-title">
+							<h2>Code Complexity Tool</h2>
+						</div>
+					</div>
+					
+					<div class="card-body">
+						<div class="form-group">
+							<h3> Choose File to Upload in Server </h3>
+					          <form action="<%=request.getContextPath() %>/upload" method="post" enctype="multipart/form-data">
+							<div class="row">
+					           	<div class="form-group">
+					           		<input type="file" name="file" class="form-control" enctype="multipart/form-data"/>
+					           	</div>
+					      		</div>
+					      		<div class="row">
+					      			<div class="form-group">
+					            	<input type="submit" class="btn btn-success" value="upload" />
+					            </div>
+					      		</div>
+					      		
+					      		<% try { 
+					      		String message = request.getAttribute("error").toString(); 
+					      		%>
+					      		<p class="bg-danger text-white"><%=message %></p>
+					      		<% } catch (Exception ex) { %>
+					      		<% } %>
+					               
+					               
+					          </form>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+                  
 	</div>
         
        

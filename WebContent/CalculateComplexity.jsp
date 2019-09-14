@@ -5,10 +5,10 @@
   <title>Bootstrap 4 Website Example</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="./External/Bootstrap/css/bootstrap.min.css">
+ <link rel="stylesheet" href="./External/Font-awesome/css/font-awesome.min.css">
+ <script src="./External/Jquery/jquery.min.js"></script>
+ <script src="./External/Bootstrap/js/bootstrap.min.js"></script>
   <style>
   .fakeimg {
     height: 200px;
@@ -36,7 +36,6 @@
 
     <div class="col-sm-12">
       <h2 class="text-center">File Name: <%= fileName %></h2>
-      <h5>No. of lines: 10</h5>
 
 		<form action="<%=request.getContextPath() %>/DisplayProgramComplexityServlet" method="POST">     
 	     <div class="form-group">
@@ -54,9 +53,6 @@
   </div>
 </div>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
-  <p>Footer</p>
-</div>
 
 </body>
 </html>
