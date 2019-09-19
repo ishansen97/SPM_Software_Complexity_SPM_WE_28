@@ -24,25 +24,7 @@
 		int last = fileName.lastIndexOf("\\");
 		String programName = fileName.substring(last + 1);
 	%>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  		<a class="navbar-brand" href="#">Home</a>
-  		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    		<span class="navbar-toggler-icon"></span>
-  		</button>
-  		<div class="collapse navbar-collapse" id="collapsibleNavbar">
-    		<ul class="navbar-nav">
-      			<li class="nav-item">
-        			<a class="nav-link" href="#">Calculate Complexity</a>
-      			</li>
-      			<li class="nav-item">
-        			<a class="nav-link" href="<%=request.getContextPath() %>/DisplayProgramComplexities.jsp">View Past Measurements</a>
-      			</li>
-		      	<li class="nav-item">
-		        	<a class="nav-link" href="<%=request.getContextPath() %>/CalculateComplexity.jsp">Compare</a>
-		      	</li>    
-    		</ul>
-  		</div>  
-	</nav>
+	<%@include file="header.jsp" %>
 	
 	<div class="container">
 		<div class="row">

@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import dbconnection.DBConnection;
+import entity.MetricMeasurement;
 import entity.ProgramComplexity;
 import models.InsertProgrammingComplexityRequest;
 import models.InsertProgrammingComplexityResponse;
 import models.ProgramStatementComplexity;
+import repository.MetricMeasurementRepository;
 
 public class ProgramComplexityLogic {
 	
@@ -43,6 +45,11 @@ public class ProgramComplexityLogic {
 		
 		int index = 0;
 		List<ProgramStatementComplexity> totalComplexities = new ArrayList<>();
+		MetricMeasurementRepository repository = new MetricMeasurementRepository();
+		List<MetricMeasurement> list = null;
+		
+		list = repository.getAllParkings();
+		MetricMeasurement m = list.get(0);
 		
 		
 		try {
@@ -82,7 +89,7 @@ public class ProgramComplexityLogic {
 				ProgramStatementComplexity recursion = recursion_complexities.get(index);
 				
 				if (recursion.isRecursionLine()) {
-					recursion_point = total_complexity * 2;
+					recursion_point = total_complexity * m.getRecursion_metric();
 				}
 				psc.setRecursion_count(recursion_point);
 				

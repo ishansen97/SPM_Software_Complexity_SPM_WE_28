@@ -11,8 +11,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import entity.MetricMeasurement;
 import models.ComplexitySettings;
 import models.ProgramStatementComplexity;
+import repository.MetricMeasurementRepository;
 
 public class ComplexityMeasurements {
 	
@@ -188,7 +190,7 @@ public class ComplexityMeasurements {
 					String[] mini_parts = part.split(Pattern.quote("("));
 					
 					if (mini_parts[0].equals("")) {
-						if (!mini_parts[0].equals("")) {
+						if (!mini_parts[1].equals("")) {
 							if (Character.isUpperCase(mini_parts[1].charAt(0))) {
 //								System.out.println("There is a class in :" + mini_parts[1]);
 								
@@ -375,7 +377,7 @@ public class ComplexityMeasurements {
 	public int getJavaKeywords() {
 		
 		for (String word: java_keywords) {
-			if (st.contains(word+ " ")) {
+			if (st.contains(word)) {
 				
 				int occurence_count = (st.split(word, -1).length) - 1;
 				size_count += occurence_count;
@@ -834,6 +836,11 @@ public class ComplexityMeasurements {
 		String statement = null;
 		int line_count = 1;
 		List<ProgramStatementComplexity> programStatements = new ArrayList<>();
+		MetricMeasurementRepository repository = new MetricMeasurementRepository();
+		List<MetricMeasurement> list = null;
+		
+		list = repository.getAllParkings();
+		MetricMeasurement m = list.get(0);
 		
 		while ((statement = br.readLine()) != null) {
 			int control_points = 0;
@@ -843,7 +850,7 @@ public class ComplexityMeasurements {
 				parts[0] = parts[0].trim();
 				
 				if (parts[0].equals(ComplexitySettings.FOR)) {
-					control_points += 2;
+					control_points += 2 * m.getControl_metric();
 					String[] separations = statement.split(Pattern.quote(";"));
 					
 					for (String sep: separations) {
@@ -861,7 +868,18 @@ public class ComplexityMeasurements {
 				}
 
 				else if (parts[0].equals(ComplexitySettings.IF)) {
-					control_points += 1;
+					control_points += m.getControl_metric();
+					
+					for (String conditional: cs) {
+							
+						int counts = (statement.split(Pattern.quote(conditional)).length) - 1; 
+						control_points += counts;
+						
+					}
+					
+				}
+				else if (parts[0].equals(ComplexitySettings.CATCH)) {
+					control_points += m.getControl_metric();
 					
 					for (String conditional: cs) {
 							

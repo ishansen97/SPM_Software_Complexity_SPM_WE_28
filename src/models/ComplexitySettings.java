@@ -100,6 +100,8 @@ public class ComplexitySettings {
 	public static final String RETURN = "return";
 	public static final String SWITCH = "switch";
 	public static final String CASE = "case";
+	public static final String TRY = "try";
+	public static final String CATCH = "catch";
 
 	public ComplexitySettings(List<String> keywords) {
 		super();
