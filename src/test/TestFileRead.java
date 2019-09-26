@@ -6,10 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.omg.CORBA.OMGVMCID;
+import logic.ComplexityMeasurements;
+import logic.ProgramComplexityLogic;
+import models.ComplexitySettings;
+import models.ProgramStatementComplexity;
 
 public class TestFileRead {
 
@@ -17,11 +22,12 @@ public class TestFileRead {
 		
 		String fileName1 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Sample Java Programs\\ThreadTest.java";
 		String fileName2 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\SampleClass.java";
-		String fileName3 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\TestInheritanceClass.java";
+		String fileName3 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Github repo\\SPM_Software_Complexity_SPM_WE_28\\src\\test\\TestInheritanceClass.java";
 		String fileName4 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM_Project_Workspace\\Software_Complexity_Measurement\\src\\test\\FibonacciMain.java";
-		File file = new File(fileName1); 
+		String fileName5 = "D:\\SLIIT\\Year 3\\Assignments\\Semester 2\\SPM\\SPM Github repo\\SPM_Software_Complexity_SPM_WE_28\\src\\test\\RecursionExample2.java";
+		File file = new File(fileName2); 
 		  
-		  BufferedReader br,br1,br2,br3,br4;
+		  BufferedReader br,br1,br2,br3,br4,br5,br6;
 		  List<String> java_keywords = ComplexitySettings.JAVA_KEYWORDS;
 		  List<String> relation_operators = ComplexitySettings.RELATION_OPERATORS;
 		  List<String> arithmetic_operators = ComplexitySettings.ARITHMETIC_OPERATORS;
@@ -38,6 +44,9 @@ public class TestFileRead {
 		  List<String> user_defined_classes = new ArrayList<>();
 		  List<String> user_defined_parent_classes = new ArrayList<>();
 		  List<String> packages = new ArrayList<>();
+		  List<String> method_names = new ArrayList<>();
+		  List<ProgramStatementComplexity> programStatements = new ArrayList<>();
+		  List<ProgramStatementComplexity> total_complexities = new ArrayList<>();
 		  
 		  
 		try {
@@ -46,11 +55,11 @@ public class TestFileRead {
 			br2 = new BufferedReader(new FileReader(file));
 			br3 = new BufferedReader(new FileReader(file));
 			br4 = new BufferedReader(new FileReader(file));
+			br5 = new BufferedReader(new FileReader(file));
+			br6 = new BufferedReader(new FileReader(file));
 			String st; 
 			int count = 0;
-			int inheritance_count = 0;
-			List<String> tokens = new ArrayList<>();
-			ComplexityMeasurements cm = new ComplexityMeasurements(classes, variables, java_keywords, arithmetic_operators, relation_operators, logical_operators, bitwise_operators, miscellaneous_operators, primitive_types, method_definitions);
+			ComplexityMeasurements cm = new ComplexityMeasurements(classes, variables, java_keywords, arithmetic_operators, relation_operators, logical_operators, bitwise_operators, miscellaneous_operators, primitive_types, method_names);
 			
 			//checking for size measurements
 			while ((st = br.readLine()) != null) {
@@ -62,56 +71,54 @@ public class TestFileRead {
 				cm.setSt(st);
 				
 				//for calculating the size count
-				size_count = ComplexityMeasurements.calculateSizeMeasurements(cm);
+				ProgramStatementComplexity obj = ComplexityMeasurements.calculateSizeMeasurements(cm, count);
+				programStatements.add(obj);
 							
-			    System.out.println(st);
-//				System.out.println("No.of Size tokens for line no. " + count + ": " + size_count);
-//				System.out.println("Inheritance size for the line no. " + count + ": " + inheritance_count);
+//			    System.out.println(st);
+
 			  }
-			
-			//checking for control structure measurements
 			
 			
 			//checking for inheritance measurements
-//			ComplexityMeasurements cm1 = new ComplexityMeasurements(user_defined_classes, user_defined_parent_classes, packages, br1);
-//			ComplexityMeasurements.calculateInheritanceMeasurements(cm1);
+			ComplexityMeasurements cm1 = new ComplexityMeasurements(user_defined_classes, user_defined_parent_classes, packages, br1);
+			Map<String, Integer> class_inheritance_counts = ComplexityMeasurements.calculateInheritanceMeasurements(cm1);
 			
 			//checking for control structure measurements
-//			ComplexityMeasurements cm2 = new ComplexityMeasurements(conditional_logical_operations, br2);
-//			ComplexityMeasurements.calculateControlStructureCount(cm2);
+			ComplexityMeasurements cm2 = new ComplexityMeasurements(conditional_logical_operations, br2);
+			List<ProgramStatementComplexity> control_structure_complexities = ComplexityMeasurements.calculateControlStructureCount(cm2);
 			
 			//checking for nesting level measurements
-//			ComplexityMeasurements cm3 = new ComplexityMeasurements(br3);
-//			ComplexityMeasurements.calculateNestingLevelMeasurement(cm3);
+			ComplexityMeasurements cm3 = new ComplexityMeasurements(br3);
+			List<ProgramStatementComplexity> nesting_level_complexities = ComplexityMeasurements.calculateNestingLevelMeasurement(cm3);
 			
-//			ComplexityMeasurements cm3 = new ComplexityMeasurements(br3);
-//			ComplexityMeasurements.calculateRecursionMeasurements(cm3);
+			//checking for recursion method measurements
+			ComplexityMeasurements cm4 = new ComplexityMeasurements(br4);
+			List<String> recursion_methods = ComplexityMeasurements.calculateRecursionMeasurements(cm4);
 			
-//			for (String var: variables) {
-//				System.out.println("Variable : " + var);
-//			}
-//			
-//			System.out.println("======================");
-//			
-//			for (String cl: classes) {
-//				System.out.println("Class : " + cl);
-//			}
-//			
+
 			System.out.println("======================");
 			
-//			for (String user_classes: user_defined_classes) {
-//				System.out.println("User defined class: " + user_classes);
-//			}
+
 			
 			System.out.println("======================");
 			
-//			for (String parent_classes: user_defined_parent_classes) {
-//				System.out.println("Parent class: " + parent_classes);
-//			}
+			ProgramComplexityLogic pcl = new ProgramComplexityLogic(programStatements, control_structure_complexities, nesting_level_complexities, class_inheritance_counts, recursion_methods);
+			total_complexities = pcl.calculateProgramStatementComplexity(br5,br6);
 			
-//			for (String method: method_definitions) {
-//				System.out.println("Methods: " + method);
-//			}
+			for (ProgramStatementComplexity ps: total_complexities) {
+				System.out.println("Details for line count: " + ps.getLineNumber());
+				System.out.println("=========================================\n");
+				System.out.println("Size count: " + ps.getSize_count());
+				System.out.println("Control count: " + ps.getControl_count());
+				System.out.println("Nested count: " + ps.getNested_level_count());
+				System.out.println("Inheritance count: " + ps.getInheritance_count());
+				System.out.println("Total weight: " + ps.getTotal_weight());
+				System.out.println("Total Complexity: " + ps.getTotal_complexity());
+				System.out.println("Recursion Complexity: " + ps.getRecursion_count());
+				System.out.println("=========================================\n");
+			}
+			
+			
 
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
